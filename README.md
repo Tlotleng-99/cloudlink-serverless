@@ -1,8 +1,8 @@
 # CloudLink — Serverless URL Shortener with Analytics
 
-A serverless URL shortener built with **Java**, **AWS Lambda**, **API Gateway**, and **DynamoDB**.
-Built as a cloud computing elective project to demonstrate serverless architecture, managed NoSQL
-storage, and infrastructure-as-code on AWS.
+A serverless URL shortener built with **Java**, **OCI Functions**, **OCI API Gateway**, and
+**Oracle NoSQL Database**. Built as a cloud computing elective project to demonstrate serverless
+architecture, managed NoSQL storage, and infrastructure-as-code on Oracle Cloud Infrastructure (OCI).
 
 ## Features
 
@@ -10,7 +10,7 @@ storage, and infrastructure-as-code on AWS.
 - Redirect from short code to original URL
 - Track click analytics (count, timestamps) per short link
 - Fully serverless — no servers to manage, scales to zero
-- Infrastructure defined as code (AWS CDK, Java)
+- Infrastructure defined as code (Terraform, OCI provider)
 
 ## Architecture
 
@@ -18,27 +18,27 @@ storage, and infrastructure-as-code on AWS.
 Client
   |
   v
-API Gateway (REST API)
+OCI API Gateway
   |
-  +--> POST /shorten   --> Lambda: CreateShortUrlHandler --> DynamoDB
-  +--> GET  /{code}    --> Lambda: RedirectHandler        --> DynamoDB
-  +--> GET  /stats/{code} --> Lambda: StatsHandler         --> DynamoDB
+  +--> POST /shorten      --> OCI Function: CreateShortUrlHandler --> Oracle NoSQL Database
+  +--> GET  /{code}       --> OCI Function: RedirectHandler        --> Oracle NoSQL Database
+  +--> GET  /stats/{code} --> OCI Function: StatsHandler           --> Oracle NoSQL Database
 ```
 
 *(Architecture diagram to be added in later section)*
 
 ## Tech Stack
 
-| Layer          | Technology                        |
-|----------------|------------------------------------|
-| Language       | Java 17                            |
-| Compute        | AWS Lambda                         |
-| API Layer      | Amazon API Gateway                 |
-| Database       | Amazon DynamoDB                    |
-| IaC            | AWS CDK (Java)                     |
-| Build Tool     | Maven                              |
-| Testing        | JUnit 5, Mockito                   |
-| CI/CD          | GitHub Actions                     |
+| Layer          | Technology                          |
+|----------------|--------------------------------------|
+| Language       | Java 17                              |
+| Compute        | OCI Functions (Fn Project)           |
+| API Layer      | OCI API Gateway                      |
+| Database       | Oracle NoSQL Database Cloud Service  |
+| IaC            | Terraform (OCI provider)             |
+| Build Tool     | Maven                                |
+| Testing        | JUnit 5, Mockito                     |
+| CI/CD          | GitHub Actions                       |
 
 ## Project Structure
 
@@ -46,12 +46,12 @@ API Gateway (REST API)
 cloudlink/
 ├── src/
 │   ├── main/java/com/cloudlink/
-│   │   ├── handlers/       # Lambda function handlers
+│   │   ├── handlers/       # OCI Function handlers
 │   │   ├── model/          # Data models (UrlMapping, etc.)
-│   │   ├── repository/     # DynamoDB access layer
+│   │   ├── repository/     # Oracle NoSQL Database access layer
 │   │   └── util/           # Helpers (short code generation, etc.)
 │   └── test/java/com/cloudlink/
-├── infra/                  # AWS CDK infrastructure code
+├── infra/                  # Terraform (OCI) infrastructure code + table schema
 ├── pom.xml
 └── README.md
 ```
@@ -61,18 +61,18 @@ cloudlink/
 🚧 Work in progress — being built incrementally as part of a cloud computing elective.
 
 - [x] Project setup & repo structure
-- [ ] DynamoDB schema + data model
-- [ ] Lambda: Create Short URL
-- [ ] Lambda: Redirect
-- [ ] Lambda: Stats
-- [ ] AWS CDK stack
+- [x] Oracle NoSQL schema + data model
+- [ ] OCI Function: Create Short URL
+- [ ] OCI Function: Redirect
+- [ ] OCI Function: Stats
+- [ ] Terraform (OCI) infrastructure stack
 - [ ] Tests
 - [ ] CI/CD pipeline
 - [ ] Architecture diagram
 
 ## Getting Started
 
-_Deployment instructions will be added once the CDK stack is complete._
+_Deployment instructions will be added once the Terraform stack is complete._
 
 ## License
 
