@@ -1,4 +1,9 @@
 package com.cloudlink.repository;
+import com.cloudlink.model.UrlMapping;
+import java.util.Optional;
 
-public class UrlMappingRepository {
+public interface UrlMappingRepository {
+    void save(UrlMapping mapping);
+    Optional<UrlMapping> findByCode(String code);
+    void update(UrlMapping mapping);
 }
