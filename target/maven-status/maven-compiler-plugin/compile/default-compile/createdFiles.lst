@@ -1,4 +1,6 @@
 com/cloudlink/util/ShortCodeGenerator.class
 com/cloudlink/handlers/CreateShortUrlHandler.class
+com/cloudlink/service/UrlService.class
+com/cloudlink/repository/InMemoryUrlRepository.class
 com/cloudlink/model/UrlMapping.class
 com/cloudlink/repository/UrlMappingRepository.class

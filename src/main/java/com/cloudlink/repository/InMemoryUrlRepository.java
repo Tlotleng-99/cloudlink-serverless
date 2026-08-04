@@ -10,7 +10,7 @@ public class InMemoryUrlRepository implements UrlMappingRepository {
     private  final Map<String, UrlMapping> urlMappings = new HashMap<>();
     @Override
     public void save(UrlMapping mapping){
-        urlMappings.put(mapping.getCode(), mapping);
+        urlMappings.put(mapping.getShortCode(), mapping);
     }
 
     @Override
@@ -20,7 +20,7 @@ public class InMemoryUrlRepository implements UrlMappingRepository {
 
     @Override
     public void update(UrlMapping mapping){
-        urlMappings.put(mapping.getCode(),mapping);
+        urlMappings.put(mapping.getShortCode(),mapping);
     }
 
 

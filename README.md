@@ -60,8 +60,8 @@ cloudlink/
 
 🚧 Work in progress — being built incrementally as part of a cloud computing elective.
 
-- [ ] Project setup & repo structure
-- [ ] Oracle NoSQL schema + data model
+- [x] Project setup & repo structure
+- [x] Oracle NoSQL schema + data model
 - [ ] OCI Function: Create Short URL
 - [ ] OCI Function: Redirect
 - [ ] OCI Function: Stats

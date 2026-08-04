@@ -18,7 +18,7 @@ public class UrlService {
 
     public String shortenUrl(String originalUrl) {
         String code = shortCodeGenerator.generateCode();
-        UrlMapping mapping = new UrlMapping(code, originalUrl, 0, LocalDateTime.now().toString());
+        UrlMapping mapping = new UrlMapping(code, originalUrl, null);
 
         repository.save(mapping);
 
@@ -31,7 +31,8 @@ public class UrlService {
             return null;
         }
             UrlMapping urlMapping = mapping.get();
-            urlMapping.setClickCount(urlMapping.getClickCount() +1);
+            urlMapping.incrementClickCount();
+            repository.update(urlMapping);
             return urlMapping.getOriginalUrl();
     }
 
