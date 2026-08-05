@@ -1,42 +1,40 @@
 package com.cloudlink;
 
 import com.cloudlink.handlers.CreateShortUrlHandler;
+import com.cloudlink.repository.InMemoryUrlRepository;
 import com.cloudlink.service.UrlService;
+import com.cloudlink.util.ShortCodeGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class CreateShortUrlHandlerTest {
 
-    private UrlService service;
     private CreateShortUrlHandler handler;
 
     @BeforeEach
     void setUp() {
-        service = mock(UrlService.class);
+        InMemoryUrlRepository repository = new InMemoryUrlRepository();
+        ShortCodeGenerator generator = new ShortCodeGenerator();
+        UrlService service = new UrlService(repository, generator);
+
         handler = new CreateShortUrlHandler(service);
     }
 
     @Test
-    void createShortUrl_returnsGeneratedCode() {
-        when(service.shortenUrl("https://example.com"))
-                .thenReturn("abc12345");
+    void createShortUrl_returnsShortCode() {
+        String code = handler.createShortUrl("https://example.com");
 
-        String result = handler.createShortUrl("https://example.com");
-
-        assertEquals("abc12345", result);
+        assertNotNull(code);
+        assertEquals(8, code.length());
     }
 
     @Test
-    void createShortUrl_callsServiceOnce() {
-        when(service.shortenUrl(anyString()))
-                .thenReturn("abc12345");
+    void createShortUrl_returnsDifferentCodes() {
+        String first = handler.createShortUrl("https://google.com");
+        String second = handler.createShortUrl("https://github.com");
 
-        handler.createShortUrl("https://example.com");
-
-        verify(service, times(1))
-                .shortenUrl("https://example.com");
+        assertNotEquals(first, second);
     }
 }

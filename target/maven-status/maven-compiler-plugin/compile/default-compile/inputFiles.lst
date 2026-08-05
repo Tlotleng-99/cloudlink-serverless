@@ -4,3 +4,6 @@
 /home/wethinkcode/Desktop/personal_projects/cloudlink-serverless/src/main/java/com/cloudlink/handlers/CreateShortUrlHandler.java
 /home/wethinkcode/Desktop/personal_projects/cloudlink-serverless/src/main/java/com/cloudlink/util/ShortCodeGenerator.java
 /home/wethinkcode/Desktop/personal_projects/cloudlink-serverless/src/main/java/com/cloudlink/service/UrlService.java
+/home/wethinkcode/Desktop/personal_projects/cloudlink-serverless/src/main/java/com/cloudlink/handlers/StatsHandler.java
+/home/wethinkcode/Desktop/personal_projects/cloudlink-serverless/src/main/java/com/cloudlink/handlers/RedirectHandler.java
+/home/wethinkcode/Desktop/personal_projects/cloudlink-serverless/src/main/java/com/cloudlink/validation/UrlValidation.java

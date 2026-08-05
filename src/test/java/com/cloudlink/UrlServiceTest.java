@@ -1,12 +1,16 @@
 package com.cloudlink;
 
+import com.cloudlink.exception.InvalidUrlException;
+import com.cloudlink.exception.UrlNotFoundException;
 import com.cloudlink.model.UrlMapping;
 import com.cloudlink.repository.UrlMappingRepository;
 import com.cloudlink.service.UrlService;
 import com.cloudlink.util.ShortCodeGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
+import java.time.Instant;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,13 +59,13 @@ class UrlServiceTest {
     }
 
     @Test
-    void redirect_returnsNull_whenCodeDoesNotExist() {
+    void redirect_throwsException_whenCodeDoesNotExist() {
         when(repository.findByCode("missing"))
                 .thenReturn(Optional.empty());
+        assertThrows(UrlNotFoundException.class, () ->{
+        service.redirect("missing");
 
-        String result = service.redirect("missing");
-
-        assertNull(result);
+        });
     }
 
     @Test
@@ -88,5 +92,45 @@ class UrlServiceTest {
         service.redirect("abc12345");
 
         verify(repository).update(mapping);
+    }
+    @Test
+    void shortenUrl_throwsException_whenUrlIsInvalid() {
+
+        assertThrows(InvalidUrlException.class, () -> {
+            service.shortenUrl("not-a-url");
+        });
+    }
+
+    @Test
+    void redirect_throwsException_whenUrlHasExpired() {
+
+        UrlMapping mapping = UrlMapping.createNew(
+                "abc123",
+                "https://example.com",
+                Instant.now().minusSeconds(60) // Expired 1 minute ago
+        );
+
+        when(repository.findByCode("abc123"))
+                .thenReturn(Optional.of(mapping));
+
+        assertThrows(UrlNotFoundException.class, () -> {
+            service.redirect("abc123");
+        });
+    }
+
+    @Test
+    void shortenUrl_withExpiration_savesExpirationDate() {
+
+        Instant expiresAt = Instant.now().plusSeconds(3600);
+
+        service.shortenUrl("https://example.com", expiresAt);
+
+        ArgumentCaptor<UrlMapping> captor = ArgumentCaptor.forClass(UrlMapping.class);
+
+        verify(repository).save(captor.capture());
+
+        UrlMapping saved = captor.getValue();
+
+        assertEquals(expiresAt, saved.getExpiresAt());
     }
 }

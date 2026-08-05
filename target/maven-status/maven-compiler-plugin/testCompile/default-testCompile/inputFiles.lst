@@ -1,5 +1,8 @@
 /home/wethinkcode/Desktop/personal_projects/cloudlink-serverless/src/test/java/com/cloudlink/UrlMappingTest.java
 /home/wethinkcode/Desktop/personal_projects/cloudlink-serverless/src/test/java/com/cloudlink/InMemoryUrlRepositoryTest.java
 /home/wethinkcode/Desktop/personal_projects/cloudlink-serverless/src/test/java/com/cloudlink/CreateShortUrlHandlerTest.java
+/home/wethinkcode/Desktop/personal_projects/cloudlink-serverless/src/test/java/com/cloudlink/UrlValidatorTest.java
 /home/wethinkcode/Desktop/personal_projects/cloudlink-serverless/src/test/java/com/cloudlink/ShortCodeGeneratorTest.java
+/home/wethinkcode/Desktop/personal_projects/cloudlink-serverless/src/test/java/com/cloudlink/RedirectHandlerTest.java
 /home/wethinkcode/Desktop/personal_projects/cloudlink-serverless/src/test/java/com/cloudlink/UrlServiceTest.java
+/home/wethinkcode/Desktop/personal_projects/cloudlink-serverless/src/test/java/com/cloudlink/StatsHandlerTest.java
