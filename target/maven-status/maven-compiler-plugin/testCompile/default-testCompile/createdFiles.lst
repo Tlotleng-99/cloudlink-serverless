@@ -1,4 +1,5 @@
 com/cloudlink/UrlServiceTest.class
 com/cloudlink/UrlMappingTest.class
+com/cloudlink/CreateShortUrlHandlerTest.class
 com/cloudlink/InMemoryUrlRepositoryTest.class
 com/cloudlink/ShortCodeGeneratorTest.class
