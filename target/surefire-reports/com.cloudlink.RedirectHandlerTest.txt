@@ -1,4 +1,13 @@
 -------------------------------------------------------------------------------
 Test set: com.cloudlink.RedirectHandlerTest
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in com.cloudlink.RedirectHandlerTest
+Tests run: 3, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.010 s <<< FAILURE! -- in com.cloudlink.RedirectHandlerTest
+com.cloudlink.RedirectHandlerTest.redirect_returnsNull_whenCodeDoesNotExist -- Time elapsed: 0.003 s <<< ERROR!
+com.cloudlink.exception.UrlNotFoundException: Short url does not exist
+	at com.cloudlink.service.UrlService.redirect(UrlService.java:45)
+	at com.cloudlink.handlers.RedirectHandler.redirect(RedirectHandler.java:13)
+	at com.cloudlink.RedirectHandlerTest.redirect_returnsNull_whenCodeDoesNotExist(RedirectHandlerTest.java:44)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+

@@ -23,5 +23,14 @@ public class InMemoryUrlRepository implements UrlMappingRepository {
         urlMappings.put(mapping.getShortCode(),mapping);
     }
 
+    @Override
+    public void delete(String code){
+        urlMappings.remove(code);
+    }
+
+    @Override
+    public Optional<UrlMapping> findByOriginalUrl(String originalUrl){
+        return urlMappings.values().stream().filter(mapping ->mapping.getOriginalUrl().equals(originalUrl)).findFirst();
+    }
 
 }

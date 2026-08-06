@@ -1,4 +1,13 @@
 -------------------------------------------------------------------------------
 Test set: com.cloudlink.StatsHandlerTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in com.cloudlink.StatsHandlerTest
+Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.011 s <<< FAILURE! -- in com.cloudlink.StatsHandlerTest
+com.cloudlink.StatsHandlerTest.getStats_returnsNull_whenCodeDoesNotExist -- Time elapsed: 0.005 s <<< ERROR!
+com.cloudlink.exception.UrlNotFoundException: Short Url not found
+	at com.cloudlink.service.UrlService.getStats(UrlService.java:60)
+	at com.cloudlink.handlers.StatsHandler.getStats(StatsHandler.java:14)
+	at com.cloudlink.StatsHandlerTest.getStats_returnsNull_whenCodeDoesNotExist(StatsHandlerTest.java:48)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+

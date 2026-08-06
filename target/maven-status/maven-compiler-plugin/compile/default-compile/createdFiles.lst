@@ -1,6 +1,8 @@
 com/cloudlink/util/ShortCodeGenerator.class
 com/cloudlink/repository/InMemoryUrlRepository.class
 com/cloudlink/handlers/RedirectHandler.class
+com/cloudlink/exception/UrlNotFoundException.class
+com/cloudlink/exception/InvalidUrlException.class
 com/cloudlink/handlers/CreateShortUrlHandler.class
 com/cloudlink/service/UrlService.class
 com/cloudlink/handlers/StatsHandler.class

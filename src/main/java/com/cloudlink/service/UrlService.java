@@ -31,11 +31,13 @@ public class UrlService {
         if(!validator.isValid(originalUrl)){
             throw new InvalidUrlException("Invalid URL");
         }
+        Optional<UrlMapping>existing = repository.findByOriginalUrl(originalUrl);
+        if(existing.isPresent()){
+            return existing.get().getShortCode();
+        }
         String code = shortCodeGenerator.generateCode();
         UrlMapping mapping = new UrlMapping(code, originalUrl, expiresAt);
-
         repository.save(mapping);
-
         return code;
     }
 
@@ -62,7 +64,14 @@ public class UrlService {
         return mapping.get();
     }
 
+    public void deleteUrl(String code){
+        Optional<UrlMapping> mapping = repository.findByCode(code);
+        if(mapping.isEmpty()){
+            throw new UrlNotFoundException("Short URL does not exist");
 
+        }
+        repository.delete(code);
+    }
 
 
 }

@@ -6,4 +6,6 @@ public interface UrlMappingRepository {
     void save(UrlMapping mapping);
     Optional<UrlMapping> findByCode(String code);
     void update(UrlMapping mapping);
+    void delete(String code);
+    Optional<UrlMapping>findByOriginalUrl(String originalUrl);
 }

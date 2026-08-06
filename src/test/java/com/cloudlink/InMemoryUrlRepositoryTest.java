@@ -90,4 +90,22 @@ class InMemoryUrlRepositoryTest {
         assertTrue(repository.findByCode("abc12345").isPresent());
         assertTrue(repository.findByCode("xyz98765").isPresent());
     }
+
+    @Test
+    void delete_removesUrlFromRepository() {
+
+        InMemoryUrlRepository repository = new InMemoryUrlRepository();
+
+        UrlMapping mapping = UrlMapping.createNew(
+                "abc123",
+                "https://example.com",
+                null
+        );
+
+        repository.save(mapping);
+
+        repository.delete("abc123");
+
+        assertTrue(repository.findByCode("abc123").isEmpty());
+    }
 }

@@ -133,4 +133,30 @@ class UrlServiceTest {
 
         assertEquals(expiresAt, saved.getExpiresAt());
     }
+    @Test
+    void deleteUrl_removesExistingUrl() {
+
+        UrlMapping mapping = UrlMapping.createNew(
+                "abc123",
+                "https://example.com",
+                null
+        );
+
+        when(repository.findByCode("abc123"))
+                .thenReturn(Optional.of(mapping));
+
+        service.deleteUrl("abc123");
+
+        verify(repository).delete("abc123");
+    }
+    @Test
+    void deleteUrl_throwsException_whenUrlDoesNotExist() {
+
+        when(repository.findByCode("missing"))
+                .thenReturn(Optional.empty());
+
+        assertThrows(UrlNotFoundException.class, () -> {
+            service.deleteUrl("missing");
+        });
+    }
 }
