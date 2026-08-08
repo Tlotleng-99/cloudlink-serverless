@@ -1,0 +1,110 @@
+*{
+margin : 0;
+padding :0;
+box-sizing: border-box;
+}
+
+:root{
+    --background: rgb(182, 175, 175);
+    --surface: #3d3f61; 
+    --text: #e5eff1;
+    --secondary-text: #508019;
+    --primary: black;
+    --border: #07c4bb;
+}
+
+body.dark{
+    --background: #121212;
+    --surface: #1e1e1e; 
+    --text: #ffff;
+    --secondary-text: #b3b3b3;
+    --primary:#07c4aa;
+    --border: #333;
+}
+
+body{
+    font-family: Ariel,san-serif;
+    background: var(--background);
+    color:var(--text);
+    min-height:100vh;
+    transition: background 0.3s, color 0.3s;
+}
+
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+}
+
+.logo{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+#DarkButton {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#DarkButton:hover {
+    opacity: 0.85;
+}
+
+#Hero {
+    text-align: center;
+    padding: 80px 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+#Hero h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--text);
+    margin-bottom: 20px;
+}
+
+#Hero p {
+    color: var(--secondary-text);
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+#Hero label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+#urlInput {
+    width: 500px;
+    max-width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text);
+    margin-right: 8px;
+}
+
+#ShortenButton {
+    padding: 12px 20px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#ShortenButton:hover {
+    opacity: 0.85;
+}
