@@ -1,6 +1,7 @@
 package com.cloudlink.handlers;
 
-import com.cloudlink.model.UrlMapping;
+import com.cloudlink.exception.UrlNotFoundException;
+
 import com.cloudlink.service.UrlService;
 
 public class StatsHandler {
@@ -10,7 +11,12 @@ public class StatsHandler {
         this.urlService = urlService;
     }
 
-    public UrlMapping getStats(String code){
-        return urlService.getStats(code);
+
+    public Object getStats(String code) {
+        try {
+            return urlService.getStats(code);
+        } catch (UrlNotFoundException e) {
+            return null;
+        }
     }
 }

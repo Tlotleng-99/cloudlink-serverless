@@ -108,3 +108,107 @@ header{
 #ShortenButton:hover {
     opacity: 0.85;
 }
+
+#Features {
+display :flex;
+justify-content : center;
+gap: 25px;
+padding : 60px 30px;
+flex-wrap: wrap;
+
+}
+
+.featurecard{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 25px;
+    width: 280px;
+    text-align: center;
+}
+
+.featurecard h3 {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--text);
+    margin-bottom: 10px;
+}
+
+.featurecard p {
+    color: var(--secondary-text);
+    font-size: 0.95rem;
+}
+
+#responses {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 35px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-align: center;
+}
+
+#responses h2 {
+    color: var(--text);
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+#shortenurl {
+    color: var(--primary);
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    overflow-wrap: anywhere;
+}
+
+#copyingbutton {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#copyingbutton:hover {
+    opacity: 0.85;
+    color: black;
+}
+.logo img {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.logo span {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text);
+}
+
+.featurecard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 25px;
+    width: 280px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.featurecard:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+button {
+    border-radius: 8px;
+}
