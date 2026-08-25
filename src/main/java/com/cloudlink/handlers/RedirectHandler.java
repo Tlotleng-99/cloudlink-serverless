@@ -1,5 +1,5 @@
 package com.cloudlink.handlers;
-
+import com.cloudlink.exception.UrlNotFoundException;
 import com.cloudlink.service.UrlService;
 
 public class RedirectHandler {
@@ -10,6 +10,10 @@ public class RedirectHandler {
     }
 
     public String redirect(String code) {
-        return urlService.redirect(code);
+        try{
+            return urlService.redirect(code);
+        }catch (UrlNotFoundException e) {
+            return null;
+        }
     }
 }
