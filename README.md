@@ -74,6 +74,4 @@ cloudlink/
 
 _Deployment instructions will be added once the Terraform stack is complete._
 
-## License
-
-MIT
+WTC-CAVSJEWH
