@@ -1,22 +1,22 @@
 package com.cloudlink.validation;
 
-
 import java.net.URI;
 import java.net.URISyntaxException;
 
 public class UrlValidation {
-    public boolean isValid(String url){
-        if(url ==null || url.isBlank()){
+    static final int MAX_URL_LENGTH = 2048;
+
+    public boolean isValid(String url) {
+        if (url == null || url.isBlank() || url.length() > MAX_URL_LENGTH) {
             return false;
         }
-        try{
+        try {
             URI uri = new URI(url);
-            return uri.getScheme() !=null && uri.getHost() !=null;
-
-        }catch (URISyntaxException e){
-            return  false;
+            String scheme = uri.getScheme();
+            boolean httpOrHttps = "http".equalsIgnoreCase(scheme) || "https".equalsIgnoreCase(scheme);
+            return httpOrHttps && uri.getHost() != null;
+        } catch (URISyntaxException e) {
+            return false;
         }
     }
-
-
 }
