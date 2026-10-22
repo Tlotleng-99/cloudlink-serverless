@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <name>CloudLink</name>
-    <description>Serverless URL shortener with analytics, built on OCI Functions + Oracle NoSQL Database</description>
+    <description>Serverless URL shortener with analytics, built on AWS Lambda + DynamoDB</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -18,52 +18,33 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Dependency versions -->
-        <fdk.version>1.0.176</fdk.version>
-        <oci.sdk.version>3.46.1</oci.sdk.version>
+        <aws.sdk.version>2.29.0</aws.sdk.version>
         <jackson.version>2.17.1</jackson.version>
         <junit.version>5.10.2</junit.version>
         <mockito.version>5.11.0</mockito.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <!-- AWS SDK v2 BOM: keeps all software.amazon.awssdk modules on the same version -->
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>bom</artifactId>
+                <version>${aws.sdk.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
-        <!-- Fn Project Java FDK - required runtime for OCI Functions -->
+        <!-- DynamoDB client (data access) -->
         <dependency>
-            <groupId>com.fnproject.fn</groupId>
-            <artifactId>api</artifactId>
-            <version>${fdk.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fnproject.fn</groupId>
-            <artifactId>runtime</artifactId>
-            <version>${fdk.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fnproject.fn</groupId>
-            <artifactId>testing-core</artifactId>
-            <version>${fdk.version}</version>
-            <scope>test</scope>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>dynamodb</artifactId>
         </dependency>
 
-        <!-- OCI SDK - NoSQL Database client -->
-        <dependency>
-            <groupId>com.oracle.oci.sdk</groupId>
-            <artifactId>oci-java-sdk-nosql</artifactId>
-            <version>${oci.sdk.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.oracle.oci.sdk</groupId>
-            <artifactId>oci-java-sdk-common</artifactId>
-            <version>${oci.sdk.version}</version>
-        </dependency>
-
-        <!-- Oracle NoSQL Database Java driver (data-plane read/write operations) -->
-        <dependency>
-            <groupId>com.oracle.nosql.sdk</groupId>
-            <artifactId>nosqldriver</artifactId>
-            <version>5.4.17</version>
-        </dependency>
-
-        <!-- JSON serialization -->
+        <!-- JSON serialization (used by the Lambda handlers added on Day 3) -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -99,7 +80,7 @@
     <build>
         <finalName>cloudlink</finalName>
         <plugins>
-            <!-- Shade plugin bundles dependencies into a single deployable JAR for the Fn/OCI Functions runtime -->
+            <!-- Shade plugin bundles dependencies into a single deployable JAR for AWS Lambda -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -112,6 +93,10 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <transformers>
+                                <!-- the AWS SDK relies on ServiceLoader files; merge them instead of overwriting -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            </transformers>
                         </configuration>
                     </execution>
                 </executions>

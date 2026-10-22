@@ -80,4 +80,13 @@ public class UrlMapping {
         return shortCode.hashCode();
     }
 
+    /** Rebuilds a mapping that was previously stored (keeps its real click count and creation time). */
+    public static UrlMapping restore(String shortCode, String originalUrl, long clickCount,
+                                     Instant createdAt, Instant expiresAt){
+        UrlMapping mapping = new UrlMapping(shortCode, originalUrl, expiresAt);
+        mapping.clickCount = clickCount;
+        mapping.createdAt = createdAt;
+        return mapping;
+    }
+
 }

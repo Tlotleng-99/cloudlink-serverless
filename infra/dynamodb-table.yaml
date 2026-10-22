@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudLink - DynamoDB table for short URL mappings
+
+Parameters:
+  TableName:
+    Type: String
+    Default: cloudlink-url-mappings
+
+Resources:
+  UrlMappingsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Ref TableName
+      BillingMode: PAY_PER_REQUEST        # no capacity to manage, pay per request
+      AttributeDefinitions:
+        - AttributeName: shortCode
+          AttributeType: S
+        - AttributeName: urlHash
+          AttributeType: S
+      KeySchema:
+        - AttributeName: shortCode
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: urlHash-index         # "has this URL been shortened already?"
+          KeySchema:
+            - AttributeName: urlHash
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+      TimeToLiveSpecification:             # DynamoDB deletes expired links for us (can lag by up to ~48h,
+        AttributeName: expiresAt           # so the code still checks isExpired())
+        Enabled: true
+
+Outputs:
+  TableName:
+    Value: !Ref UrlMappingsTable
+  TableArn:
+    Value: !GetAtt UrlMappingsTable.Arn
