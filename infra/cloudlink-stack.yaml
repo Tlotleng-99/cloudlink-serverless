@@ -2,6 +2,16 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: CloudLink URL shortener - Lambda, API Gateway and DynamoDB
 
+Parameters:
+  DeploymentBucket:
+    Type: String
+    Description: Name of the S3 bucket containing the CloudLink JAR
+
+  DeploymentKey:
+    Type: String
+    Default: cloudlink.jar
+    Description: S3 object key for the packaged CloudLink JAR
+
 Resources:
   UrlMappingsTable:
     Type: AWS::DynamoDB::Table
@@ -26,15 +36,6 @@ Resources:
       TimeToLiveSpecification:
         AttributeName: expiresAt
         Enabled: true
-
-  CloudLinkApi:
-    Type: AWS::ApiGateway::RestApi
-    Properties:
-      Name: cloudlink-api
-      Description: CloudLink URL shortener API
-      EndpointConfiguration:
-        Types:
-          - REGIONAL
 
   CloudLinkLambdaRole:
     Type: AWS::IAM::Role
@@ -76,8 +77,8 @@ Resources:
       Timeout: 15
       MemorySize: 512
       Code:
-        S3Bucket: REPLACE_WITH_DEPLOYMENT_BUCKET
-        S3Key: cloudlink.jar
+        S3Bucket: !Ref DeploymentBucket
+        S3Key: !Ref DeploymentKey
       Environment:
         Variables:
           TABLE_NAME: !Ref UrlMappingsTable
@@ -92,8 +93,8 @@ Resources:
       Timeout: 15
       MemorySize: 512
       Code:
-        S3Bucket: REPLACE_WITH_DEPLOYMENT_BUCKET
-        S3Key: cloudlink.jar
+        S3Bucket: !Ref DeploymentBucket
+        S3Key: !Ref DeploymentKey
       Environment:
         Variables:
           TABLE_NAME: !Ref UrlMappingsTable
@@ -108,11 +109,20 @@ Resources:
       Timeout: 15
       MemorySize: 512
       Code:
-        S3Bucket: REPLACE_WITH_DEPLOYMENT_BUCKET
-        S3Key: cloudlink.jar
+        S3Bucket: !Ref DeploymentBucket
+        S3Key: !Ref DeploymentKey
       Environment:
         Variables:
           TABLE_NAME: !Ref UrlMappingsTable
+
+  CloudLinkApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: cloudlink-api
+      Description: CloudLink URL shortener API
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
 
   CreateUrlResource:
     Type: AWS::ApiGateway::Resource
@@ -132,7 +142,7 @@ Resources:
         Type: AWS_PROXY
         IntegrationHttpMethod: POST
         Uri: !Sub
-          - arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${FunctionArn}/invocations
+          - 'arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${FunctionArn}/invocations'
           - FunctionArn: !GetAtt CreateUrlFunction.Arn
 
   ShortCodeResource:
@@ -153,7 +163,7 @@ Resources:
         Type: AWS_PROXY
         IntegrationHttpMethod: POST
         Uri: !Sub
-          - arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${FunctionArn}/invocations
+          - 'arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${FunctionArn}/invocations'
           - FunctionArn: !GetAtt RedirectUrlFunction.Arn
 
   StatsResource:
@@ -181,7 +191,7 @@ Resources:
         Type: AWS_PROXY
         IntegrationHttpMethod: POST
         Uri: !Sub
-          - arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${FunctionArn}/invocations
+          - 'arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${FunctionArn}/invocations'
           - FunctionArn: !GetAtt StatsFunction.Arn
 
   CreateUrlPermission:
@@ -228,5 +238,7 @@ Outputs:
   ApiBaseUrl:
     Description: Base URL for the deployed CloudLink API
     Value: !Sub 'https://${CloudLinkApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/prod'
+
   DynamoDBTableName:
+    Description: DynamoDB table storing short URL mappings
     Value: !Ref UrlMappingsTable
