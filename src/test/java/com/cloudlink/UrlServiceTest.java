@@ -2,6 +2,7 @@ package com.cloudlink;
 
 import com.cloudlink.exception.InvalidUrlException;
 import com.cloudlink.exception.UrlNotFoundException;
+import com.cloudlink.exception.CodeAlreadyExistsException;
 import com.cloudlink.model.UrlMapping;
 import com.cloudlink.repository.UrlMappingRepository;
 import com.cloudlink.service.UrlService;
@@ -69,7 +70,7 @@ class UrlServiceTest {
     }
 
     @Test
-    void redirect_incrementsClickCount() {
+    void redirect_incrementsClickCountInRepository() {
         UrlMapping mapping =
                 UrlMapping.createNew("abc12345", "https://example.com", null);
 
@@ -78,21 +79,54 @@ class UrlServiceTest {
 
         service.redirect("abc12345");
 
-        assertEquals(1L, mapping.getClickCount());
+        verify(repository).incrementClickCount("abc12345");
     }
 
     @Test
-    void redirect_updatesRepository() {
-        UrlMapping mapping =
-                UrlMapping.createNew("abc12345", "https://example.com", null);
+    void redirect_doesNotCountClick_whenUrlHasExpired() {
+        UrlMapping expired = UrlMapping.createNew(
+                "abc12345", "https://example.com", Instant.now().minusSeconds(60));
 
         when(repository.findByCode("abc12345"))
-                .thenReturn(Optional.of(mapping));
+                .thenReturn(Optional.of(expired));
 
-        service.redirect("abc12345");
+        assertThrows(UrlNotFoundException.class, () -> service.redirect("abc12345"));
 
-        verify(repository).update(mapping);
+        verify(repository, never()).incrementClickCount(any());
     }
+
+    @Test
+    void shortenUrl_retriesWithNewCode_whenCodeAlreadyExists() {
+        doThrow(new CodeAlreadyExistsException("taken"))
+                .doNothing()
+                .when(repository).save(any(UrlMapping.class));
+
+        String code = service.shortenUrl("https://example.com");
+
+        assertNotNull(code);
+        verify(repository, times(2)).save(any(UrlMapping.class));
+    }
+
+    @Test
+    void shortenUrl_givesUp_whenEveryCodeIsTaken() {
+        doThrow(new CodeAlreadyExistsException("taken"))
+                .when(repository).save(any(UrlMapping.class));
+
+        assertThrows(IllegalStateException.class, () -> service.shortenUrl("https://example.com"));
+    }
+
+    @Test
+    void shortenUrl_returnsExistingCode_whenUrlWasAlreadyShortened() {
+        UrlMapping existing = UrlMapping.createNew("abc12345", "https://example.com", null);
+        when(repository.findByOriginalUrl("https://example.com"))
+                .thenReturn(Optional.of(existing));
+
+        String code = service.shortenUrl("https://example.com");
+
+        assertEquals("abc12345", code);
+        verify(repository, never()).save(any(UrlMapping.class));
+    }
+
     @Test
     void shortenUrl_throwsException_whenUrlIsInvalid() {
 

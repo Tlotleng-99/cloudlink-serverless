@@ -43,4 +43,30 @@ class UrlValidatorTest {
     void malformedUrl_returnsFalse() {
         assertFalse(validator.isValid("ht!tp://abc"));
     }
+    @Test
+    void ftpUrl_returnsFalse() {
+        assertFalse(validator.isValid("ftp://example.com/file"));
+    }
+
+    @Test
+    void javascriptUrl_returnsFalse() {
+        assertFalse(validator.isValid("javascript:alert(1)"));
+    }
+
+    @Test
+    void urlWithoutHost_returnsFalse() {
+        assertFalse(validator.isValid("https://"));
+    }
+
+    @Test
+    void upperCaseScheme_returnsTrue() {
+        assertTrue(validator.isValid("HTTPS://example.com"));
+    }
+
+    @Test
+    void tooLongUrl_returnsFalse() {
+        String longUrl = "https://example.com/" + "a".repeat(2100);
+
+        assertFalse(validator.isValid(longUrl));
+    }
 }
