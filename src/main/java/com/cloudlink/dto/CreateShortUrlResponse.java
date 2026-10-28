@@ -1,17 +1,22 @@
+
 package com.cloudlink.dto;
 
 public class CreateShortUrlResponse {
-    private String ShortCode;
 
-    public CreateShortUrlResponse(){
+    private String shortCode;
+
+    public CreateShortUrlResponse() {
     }
-    public CreateShortUrlResponse(String ShortCode){
-        this.ShortCode = ShortCode;
+
+    public CreateShortUrlResponse(String shortCode) {
+        this.shortCode = shortCode;
     }
-    public String getShortCode(){
-        return ShortCode;
+
+    public String getShortCode() {
+        return shortCode;
     }
-    public void setShortCode(String ShortCode){
-        this.ShortCode = ShortCode;
+
+    public void setShortCode(String shortCode) {
+        this.shortCode = shortCode;
     }
 }

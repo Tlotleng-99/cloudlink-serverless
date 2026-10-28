@@ -20,7 +20,9 @@ public class StatsLambda implements
         String shortCode = LambdaSupport.getShortCode(request);
 
         if (shortCode == null || shortCode.isBlank()) {
-            return LambdaSupport.errorResponse(400, "Short code is required.");
+            return LambdaSupport.errorResponse(
+                    400, "Short code is required."
+            );
         }
 
         try {
@@ -37,11 +39,17 @@ public class StatsLambda implements
 
         } catch (UrlNotFoundException e) {
             return LambdaSupport.errorResponse(404, e.getMessage());
+
         } catch (Exception e) {
             if (context != null) {
-                context.getLogger().log("Stats lookup failed: " + e.getMessage());
+                context.getLogger().log(
+                        "Stats lookup failed: " + e.getMessage()
+                );
             }
-            return LambdaSupport.errorResponse(500, "Unable to retrieve URL statistics.");
+
+            return LambdaSupport.errorResponse(
+                    500, "Unable to retrieve URL statistics."
+            );
         }
     }
 }

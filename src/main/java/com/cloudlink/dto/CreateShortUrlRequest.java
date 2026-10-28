@@ -1,16 +1,22 @@
+
 package com.cloudlink.dto;
 
 public class CreateShortUrlRequest {
+
     private String originalUrl;
-    public CreateShortUrlRequest(){
+
+    public CreateShortUrlRequest() {
     }
-    public CreateShortUrlRequest(String originalUrl){
+
+    public CreateShortUrlRequest(String originalUrl) {
         this.originalUrl = originalUrl;
     }
-    public String getOriginalUrl(){
+
+    public String getOriginalUrl() {
         return originalUrl;
     }
-    public void  setOriginalUrl(String originalUrl){
+
+    public void setOriginalUrl(String originalUrl) {
         this.originalUrl = originalUrl;
     }
 }
