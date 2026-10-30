@@ -73,5 +73,7 @@ cloudlink/
 ## Getting Started
 
 _Deployment instructions will be added once the Terraform stack is complete._
+Here is also myyoutube link
+https://youtu.be/5f4TNgIQxLU?si=5eDnRe7V0N_CE79U
 
 WTC-CAVSJEWH
